@@ -24,11 +24,10 @@
 }
 
 .container {
-  overflow-x: auto;
   flex-grow: 1;
+  overflow: hidden;
   white-space: nowrap;
 }
-
 
 .queryLoading {
   width: 100%;

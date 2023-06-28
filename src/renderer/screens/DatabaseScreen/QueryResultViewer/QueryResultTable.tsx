@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import styles from './styles.module.scss';
 import TableCell from 'renderer/screens/DatabaseScreen/QueryResultViewer/TableCell/TableCell';
 import Icon from 'renderer/components/Icon';
@@ -8,7 +8,7 @@ import { useSchmea } from 'renderer/contexts/SchemaProvider';
 import { useContextMenu } from 'renderer/contexts/ContextMenuProvider';
 import { useQueryResultChange } from 'renderer/contexts/QueryResultChangeProvider';
 import { useTableCellManager } from './TableCellManager';
-import ResizableTable from 'renderer/components/ResizableTable';
+import OptimizeTable from 'renderer/components/ResizableTable/OptimizeTable';
 
 interface QueryResultTableProps {
   result: QueryResult;
@@ -118,12 +118,21 @@ function QueryResultTable({ result, page, pageSize }: QueryResultTableProps) {
     }));
   }, [result]);
 
+  const onRenderCell = useCallback(
+    (rowNumber: number, cellNumber: number) => {
+      return <div></div>;
+    },
+    [result]
+  );
+
   return (
-    <div
-      className={`${styles.container} scroll`}
-      onContextMenu={handleContextMenu}
-    >
-      <ResizableTable headers={headerMemo}>{RowList}</ResizableTable>
+    <div onContextMenu={handleContextMenu} className={styles.container}>
+      <OptimizeTable
+        headers={headerMemo}
+        items={result.rows}
+        rowHeight={30}
+        renderCells={onRenderCell}
+      />
     </div>
   );
 }
